@@ -1,5 +1,10 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "kost");
+session_start();
+if (isset($_SESSION['admin'])) {
+    header('Location: admin/dashboard.php');
+    exit;
+}
+$conn = new mysqli("localhost", "root", "", "db_kost");
 
 // Kamar kosong (tidak sedang ditempati)
 $kamar_kosong = $conn->query("
@@ -78,7 +83,31 @@ $tagihan_telat = $conn->query("
         </div>
     </div>
     <div class="mt-4">
-        <a href="login.php" class="btn btn-primary">Login Admin</a>
+        <?php if (isset($_POST['login'])): ?>
+            <?php
+            $user = $_POST['username'] ?? '';
+            $pass = $_POST['password'] ?? '';
+            if ($user === 'admin' && $pass === 'admin') {
+                $_SESSION['admin'] = true;
+                header('Location: admin/dashboard.php');
+                exit;
+            } else {
+                echo '<div class="alert alert-danger">Username atau password salah!</div>';
+            }
+            ?>
+        <?php endif; ?>
+        <form method="post" class="card p-3" style="max-width:350px;">
+            <h4 class="mb-3">Login Admin</h4>
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
+        </form>
     </div>
 </div>
 </body>
