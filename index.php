@@ -194,7 +194,7 @@ body, html {
     height: 100%;
 }
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #e0e7ff 0%,rgb(99, 162, 226) 100%);
+    background: linear-gradient(135deg,rgb(243, 243, 243) 0%,rgb(99, 162, 226) 100%);
 }
 .card {
     border-radius: 1rem;
